@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>لوحة التحكم الكاملة - معرض ADVOX</title>
+  <title>لوحة التحكم المباشرة - معرض ADVOX</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Tajawal', sans-serif; margin: 20px; background: #f3f4f6; color: #1f2937; }
@@ -10,44 +10,54 @@
     .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
     .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
     input, select, textarea { width: 100%; padding: 10px; margin: 8px 0 15px 0; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; }
-    button { background: #16a34a; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    button { background: #16a34a; color: white; border: none; padding: 11px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
     button:hover { background: #15803d; }
-    .btn-danger { background: #dc2626; } .btn-danger:hover { background: #b91c1c; }
-    .btn-warning { background: #d97706; } .btn-warning:hover { background: #b45309; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #edf2f7; }
-    .actions button { padding: 5px 10px; margin-right: 5px; font-size: 0.85rem; }
+    .btn-danger { background: #dc2626; width: auto; } .btn-danger:hover { background: #b91c1c; }
+    .btn-warning { background: #d97706; width: auto; } .btn-warning:hover { background: #b45309; }
+    .btn-save-all { background: #2563eb; font-size: 1.1rem; padding: 15px; margin-top: 10px; }
+    .btn-save-all:hover { background: #1d4ed8; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #edf2f7; }
+    .actions button { padding: 6px 12px; margin-right: 5px; font-size: 0.85rem; }
+    .status { padding: 12px; background: #e0f2fe; color: #0369a1; border-radius: 6px; margin-bottom: 15px; display: none; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <h1>⚙️ لوحة تحكم معرض ADVOX</h1>
-  <button onclick="downloadJSON()" style="background:#2563eb; margin-bottom: 20px;">📥 تنزيل ملف البيانات (data.json) للحفظ على GitHub</button>
+  <h1>⚙️ لوحة التحكم التلقائية (تعديل وحفظ مباشر)</h1>
+  
+  <div class="box">
+    <h2>إعداد الربط المباشر مع المتجر</h2>
+    <label>رمز الاتصال (GitHub Token):</label>
+    <input type="password" id="gh-token" placeholder="الصق الرمز هنا للربط المباشر">
+    <button onclick="saveToken()" style="background:#4b5563;">حفظ الرمز لتنفيذ الحفظ المباشر تلقائياً</button>
+  </div>
+
+  <div id="status-msg" class="status"></div>
 
   <div class="grid">
     <!-- إدارة الأقسام -->
     <div>
       <div class="box">
-        <h2 id="cat-form-title">إضافة قسم جديد</h2>
+        <h2 id="cat-form-title">إضافة / تعديل قسم</h2>
         <input type="hidden" id="edit-cat-id">
         <label>اسم القسم:</label>
         <input type="text" id="cat-name" placeholder="مثال: قواعد وشاشات TV">
-        <button onclick="saveCategory()">حفظ القسم</button>
-        <button onclick="resetCatForm()" class="btn-warning">إلغاء</button>
+        <button onclick="saveCategory()">إضافة / تحديث القسم</button>
       </div>
 
       <div class="box">
-        <h2>قائمة الأقسام</h2>
+        <h2>الأقسام الحالية</h2>
         <div id="categories-list"></div>
       </div>
     </div>
 
-    <!-- إدارة المنتجات -->
+    <!-- إدارة المنتجات والأسعار -->
     <div>
       <div class="box">
-        <h2 id="prod-form-title">إضافة منتج جديد</h2>
+        <h2 id="prod-form-title">إضافة / تعديل منتج</h2>
         <input type="hidden" id="edit-prod-id">
         
-        <label>اختر القسم (نقل/تخصيص المنتج):</label>
+        <label>اختر القسم:</label>
         <select id="prod-cat-select"></select>
 
         <label>اسم المنتج:</label>
@@ -56,47 +66,62 @@
         <label>السعر (بالدينار):</label>
         <input type="text" id="prod-price" placeholder="مثال: 95,000">
 
-        <label>المواصفات / القياسات:</label>
+        <label>المواصفات والقياسات (بالسنتيمتر):</label>
         <input type="text" id="prod-specs" placeholder="القياسات بالسنتيمتر أو البوصة">
 
-        <label>الوصف التفصيلي:</label>
+        <label>الوصف:</label>
         <textarea id="prod-desc" rows="3"></textarea>
 
-        <label>رابط صورة المنتج (URL):</label>
-        <input type="text" id="prod-img" placeholder="https://example.com/image.jpg">
+        <label>رابط الصورة المباشر (URL):</label>
+        <input type="text" id="prod-img" placeholder="https://domain.com/image.jpg">
 
-        <button onclick="saveProduct()">حفظ المنتج</button>
-        <button onclick="resetProdForm()" class="btn-warning">إلغاء</button>
+        <button onclick="saveProduct()">إضافة / تحديث المنتج</button>
       </div>
 
       <div class="box">
-        <h2>قائمة المنتجات</h2>
+        <h2>المنتجات والأسعار</h2>
         <div id="products-list"></div>
       </div>
     </div>
   </div>
 
-  <script>
-    let data = { categories: [], products: [] };
+  <button class="btn-save-all" onclick="syncToGitHub()">💾 حفظ ونشر جميع التغييرات في المتجر مباشرة</button>
 
-    async function init() {
-      const saved = localStorage.getItem('advox_store_data');
-      if (saved) {
-        data = JSON.parse(saved);
-      } else {
-        try {
-          const res = await fetch('data.json');
-          data = await res.json();
-        } catch (e) {
-          data = { categories: [], products: [] };
-        }
-      }
-      renderAll();
+  <script>
+    const USERNAME = "ameralahlam444-glitch";
+    const REPO = "advox-store";
+    const FILE_PATH = "data.json";
+
+    let storeData = { categories: [], products: [] };
+    let fileSHA = "";
+
+    function showStatus(msg) {
+      const el = document.getElementById('status-msg');
+      el.style.display = 'block';
+      el.innerText = msg;
     }
 
-    function saveData() {
-      localStorage.setItem('advox_store_data', JSON.stringify(data));
-      renderAll();
+    function saveToken() {
+      const token = document.getElementById('gh-token').value;
+      localStorage.setItem('gh_token', token);
+      showStatus("تم حفظ الرمز بنجاح! يمكنك الان الحفظ المباشر بنقرة زر واحدة.");
+      loadFromGitHub();
+    }
+
+    async function loadFromGitHub() {
+      const token = localStorage.getItem('gh_token');
+      if (token) document.getElementById('gh-token').value = token;
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/contents/${FILE_PATH}`);
+        const json = await res.json();
+        fileSHA = json.sha;
+        const decodedContent = decodeURIComponent(escape(atob(json.content)));
+        storeData = JSON.parse(decodedContent);
+        renderAll();
+      } catch (e) {
+        showStatus("يرجى إدخال رمز الاتصال (GitHub Token) لتفعيل الحفظ المباشر.");
+      }
     }
 
     function renderAll() {
@@ -106,8 +131,7 @@
     }
 
     function renderCategoriesList() {
-      const list = document.getElementById('categories-list');
-      list.innerHTML = data.categories.map(c => `
+      document.getElementById('categories-list').innerHTML = storeData.categories.map(c => `
         <div class="item-row">
           <span><strong>${c.name}</strong></span>
           <div class="actions">
@@ -118,65 +142,58 @@
       `).join('');
     }
 
-    function saveCategory() {
-      const name = document.getElementById('cat-name').value;
-      const id = document.getElementById('edit-cat-id').value;
-      if (!name) return alert('أدخل اسم القسم');
-
-      if (id) {
-        const cat = data.categories.find(c => c.id === id);
-        if (cat) cat.name = name;
-      } else {
-        data.categories.push({ id: 'cat_' + Date.now(), name });
-      }
-      resetCatForm();
-      saveData();
-    }
-
-    function editCategory(id) {
-      const cat = data.categories.find(c => c.id === id);
-      if (!cat) return;
-      document.getElementById('cat-name').value = cat.name;
-      document.getElementById('edit-cat-id').value = cat.id;
-      document.getElementById('cat-form-title').innerText = "تعديل القسم";
-    }
-
-    function deleteCategory(id) {
-      if (confirm('سيتم حذف القسم والمنتجات التابعة له، هل أنت تأكد؟')) {
-        data.categories = data.categories.filter(c => c.id !== id);
-        data.products = data.products.filter(p => p.catId !== id);
-        saveData();
-      }
-    }
-
-    function resetCatForm() {
-      document.getElementById('cat-name').value = '';
-      document.getElementById('edit-cat-id').value = '';
-      document.getElementById('cat-form-title').innerText = "إضافة قسم جديد";
-    }
-
     function renderCategorySelect() {
-      const select = document.getElementById('prod-cat-select');
-      select.innerHTML = data.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      document.getElementById('prod-cat-select').innerHTML = storeData.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
 
     function renderProductsList() {
-      const list = document.getElementById('products-list');
-      list.innerHTML = data.products.map(p => {
-        const cat = data.categories.find(c => c.id === p.catId);
+      document.getElementById('products-list').innerHTML = storeData.products.map(p => {
+        const cat = storeData.categories.find(c => c.id === p.catId);
         return `
           <div class="item-row">
             <div>
-              <strong>${p.title}</strong> (${p.price} د.ع) <br>
-              <small style="color:#6b7280">القسم: ${cat ? cat.name : 'بدون قسم'}</small>
+              <strong>${p.title}</strong> — <span style="color:#16a34a; font-weight:bold;">${p.price} د.ع</span><br>
+              <small style="color:#6b7280">القسم: ${cat ? cat.name : 'بدون قسم'} | القياسات: ${p.specs || 'غير محددة'}</small>
             </div>
             <div class="actions">
-              <button onclick="editProduct('${p.id}')" class="btn-warning">تعديل / نقل</button>
+              <button onclick="editProduct('${p.id}')" class="btn-warning">تعديل</button>
               <button onclick="deleteProduct('${p.id}')" class="btn-danger">حذف</button>
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    function saveCategory() {
+      const name = document.getElementById('cat-name').value;
+      const id = document.getElementById('edit-cat-id').value;
+      if (!name) return alert("أدخل اسم القسم");
+
+      if (id) {
+        const cat = storeData.categories.find(c => c.id === id);
+        if (cat) cat.name = name;
+      } else {
+        storeData.categories.push({ id: 'cat_' + Date.now(), name });
+      }
+      document.getElementById('cat-name').value = '';
+      document.getElementById('edit-cat-id').value = '';
+      renderAll();
+    }
+
+    function editCategory(id) {
+      const cat = storeData.categories.find(c => c.id === id);
+      if (cat) {
+        document.getElementById('cat-name').value = cat.name;
+        document.getElementById('edit-cat-id').value = cat.id;
+      }
+    }
+
+    function deleteCategory(id) {
+      if (confirm("حذف القسم والمنتجات التابعة له؟")) {
+        storeData.categories = storeData.categories.filter(c => c.id !== id);
+        storeData.products = storeData.products.filter(p => p.catId !== id);
+        renderAll();
+      }
     }
 
     function saveProduct() {
@@ -188,22 +205,23 @@
       const desc = document.getElementById('prod-desc').value;
       const img = document.getElementById('prod-img').value;
 
-      if (!title || !catId) return alert('يرجى ملء الاسم واختيار القسم');
+      if (!title || !price) return alert("أدخل الاسم والسعر على الأقل");
 
-      const prodData = { id: id || 'prod_' + Date.now(), catId, title, price, specs, desc, img };
+      const pData = { id: id || 'prod_' + Date.now(), catId, title, price, specs, desc, img };
 
       if (id) {
-        const index = data.products.findIndex(p => p.id === id);
-        if (index !== -1) data.products[index] = prodData;
+        const index = storeData.products.findIndex(p => p.id === id);
+        if (index !== -1) storeData.products[index] = pData;
       } else {
-        data.products.push(prodData);
+        storeData.products.push(pData);
       }
+
       resetProdForm();
-      saveData();
+      renderAll();
     }
 
     function editProduct(id) {
-      const p = data.products.find(p => p.id === id);
+      const p = storeData.products.find(p => p.id === id);
       if (!p) return;
       document.getElementById('edit-prod-id').value = p.id;
       document.getElementById('prod-cat-select').value = p.catId;
@@ -212,13 +230,12 @@
       document.getElementById('prod-specs').value = p.specs || '';
       document.getElementById('prod-desc').value = p.desc || '';
       document.getElementById('prod-img').value = p.img || '';
-      document.getElementById('prod-form-title').innerText = "تعديل / نقل المنتج";
     }
 
     function deleteProduct(id) {
-      if (confirm('هل أنت تأكد من حذف هذا المنتج؟')) {
-        data.products = data.products.filter(p => p.id !== id);
-        saveData();
+      if (confirm("حذف هذا المنتج؟")) {
+        storeData.products = storeData.products.filter(p => p.id !== id);
+        renderAll();
       }
     }
 
@@ -229,20 +246,43 @@
       document.getElementById('prod-specs').value = '';
       document.getElementById('prod-desc').value = '';
       document.getElementById('prod-img').value = '';
-      document.getElementById('prod-form-title').innerText = "إضافة منتج جديد";
     }
 
-    function downloadJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "data.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
+    async function syncToGitHub() {
+      const token = localStorage.getItem('gh_token');
+      if (!token) return alert("يرجى إدخال رمز الاتصال أولاً.");
+
+      showStatus("⏳ جاري نشر التحديثات إلى المتجر مباشرة...");
+
+      const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(storeData, null, 2))));
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/contents/${FILE_PATH}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `token ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: "تحديث مباشر للمتجر عبر لوحة التحكم",
+            content: updatedContent,
+            sha: fileSHA
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          fileSHA = data.content.sha;
+          showStatus("✅ تم نشر وتحديث المتجر بنجاح! التغييرات أصبحت مباشرة الآن.");
+        } else {
+          showStatus("❌ فشل التحديث. تأكد من صحة الرمز ومنح صلاحية repo.");
+        }
+      } catch (e) {
+        showStatus("حدث خطأ في الاتصال بالشبكة.");
+      }
     }
 
-    init();
+    loadFromGitHub();
   </script>
 </body>
 </html>
