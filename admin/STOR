@@ -8,8 +8,7 @@
   <style>
     :root {
       --primary: #111827;
-      --accent: #16a34a; /* لون أخضر جذاب للأسعار والأزرار */
-      --accent-hover: #15803d;
+      --accent: #16a34a;
       --bg-light: #f9fafb;
       --card-bg: #ffffff;
       --text-dark: #1f2937;
@@ -19,143 +18,123 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
     body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
 
-    /* الهيدر والشعار */
-    header { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; sticky: top; z-index: 100; }
-    .logo { font-size: 1.8rem; font-weight: 800; tracking: 1px; color: #fff; text-decoration: none; }
+    header { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.8rem; font-weight: 800; color: #fff; text-decoration: none; }
     .logo span { color: var(--accent); }
 
-    /* البانر الرئيسي */
-    .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: white; padding: 60px 5%; text-align: center; }
-    .hero h1 { font-size: 2.5rem; margin-bottom: 15px; }
-    .hero p { font-size: 1.1rem; color: #d1d5db; max-width: 600px; margin: 0 auto; }
+    .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: white; padding: 50px 5%; text-align: center; }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
 
-    /* أشرطة الأقسام (Shopify Style Tabs) */
-    .categories-bar { display: flex; justify-content: center; gap: 10px; padding: 25px 5%; overflow-x: auto; }
-    .cat-btn { background: white; border: 1px solid #e5e7eb; padding: 10px 22px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+    /* شريط الأقسام Dynamic Category Bar */
+    .categories-bar { display: flex; justify-content: center; gap: 10px; padding: 20px 5%; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
+    .cat-btn { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 10px 22px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
     .cat-btn.active, .cat-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-    /* شبكة المنتجات */
-    .container { padding: 0 5% 50px 5%; max-width: 1400px; margin: 0 auto; }
+    .container { padding: 30px 5%; max-width: 1400px; margin: 0 auto; }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
 
-    /* بطاقة المنتج */
-    .product-card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+    .product-card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
     .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-    .product-img { width: 100%; height: 240px; object-fit: cover; background: #f3f4f6; }
+    .product-img { width: 100%; height: 230px; object-fit: cover; background: #f3f4f6; }
     .product-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
     .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text-dark); }
+    .specs-highlight { color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
     .product-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; flex-grow: 1; white-space: pre-line; }
-    
-    /* إبراز المقاسات والتفاصيل باللون الأخضر */
-    .specs-highlight { color: var(--accent) !important; font-weight: 700; font-size: 0.9rem; margin-bottom: 12px; }
-    
+
     .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
     .product-price { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
-    .btn-buy { background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: 0.2s; }
+    .btn-buy { background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; }
     .btn-buy:hover { background: #1eb854; }
 
-    /* الفوتر */
-    footer { background: var(--primary); color: #9ca3af; text-align: center; padding: 25px; margin-top: 40px; font-size: 0.9rem; }
+    footer { background: var(--primary); color: #9ca3af; text-align: center; padding: 25px; margin-top: 40px; }
   </style>
 </head>
 <body>
 
   <header>
     <a href="#" class="logo">ADVOX <span>GALLERY</span></a>
+    <a href="admin.html" style="color:#d1d5db; text-decoration:none; font-weight:bold;">⚙️ لوحة التحكم</a>
   </header>
 
   <section class="hero">
-    <h1>أحدث التقنيات والإكسسوارات المنزلية</h1>
-    <p>تصفح تشكيلتنا المميزة من شاشات، قواعد، وإكسسوارات عالية الجودة بأفضل الأسعار</p>
+    <h1>معرض ADVOX الإلكتروني</h1>
+    <p>أحدث الشاشات، القواعد، والإكسسوارات الإلكترونية</p>
   </section>
 
-  <!-- أزرار الأقسام -->
-  <div class="categories-bar">
-    <button class="cat-btn active" onclick="filterCategory('all')">الكل</button>
-    <button class="cat-btn" onclick="filterCategory('tv-stands')">قواعد وشاشات TV</button>
-    <button class="cat-btn" onclick="filterCategory('car-cams')">كاميرات السيارات</button>
-    <button class="cat-btn" onclick="filterCategory('accessories')">إكسسوارات وهواتف</button>
-  </div>
+  <!-- شريط الأقسام الديناميكي -->
+  <div class="categories-bar" id="categories-bar"></div>
 
   <div class="container">
-    <div class="products-grid" id="products-grid">
-      <!-- المنتجات تظهر هنا تلقائياً -->
-    </div>
+    <div class="products-grid" id="products-grid"></div>
   </div>
 
-  <footer>
-    <p>جميع الحقوق محفوظة &copy; معرض ADVOX 2026</p>
-  </footer>
+  <footer><p>جميع الحقوق محفوظة &copy; معرض ADVOX 2026</p></footer>
 
   <script>
-    // رقم الواتساب لتلقي الطلبات مباشرة
-    const whatsappNumber = "9647000000000"; // استبدله برقمك مع مفتاح الدولة
+    const whatsappNumber = "9647000000000"; // ضع رقمك هنا
+    let storeData = { categories: [], products: [] };
 
-    // قائمة المنتجات التجريبية (يمكن استبدالها بربط Decap CMS تلقائياً)
-    const products = [
-      {
-        id: 1,
-        title: "حامل شاشة متحرك موديل A86",
-        category: "tv-stands",
-        price: "120,000",
-        specs: "القياسات: يناسب من 55 إلى 85 بوصة | الوزن: حتى 60 كغم",
-        description: "مصنوع من الصلب المقوى لضمان الثبات التام مع حرية حركة متعددة الاتجاهات.",
-        image: "https://via.placeholder.com/400x300?text=TV+Stand+A86"
-      },
-      {
-        id: 2,
-        title: "منضدة وقاعدة شاشة موديل 1700",
-        category: "tv-stands",
-        price: "95,000",
-        specs: "القياسات: دعم حتى 75 بوصة | حمولة: 50 كغم",
-        description: "تصميم عصري متين يناسب الصالات الحديثة ومساحات العرض.",
-        image: "https://via.placeholder.com/400x300?text=Model+1700"
-      },
-      {
-        id: 3,
-        title: "كاميرا سيارة ذكية Dash Cam Pro",
-        category: "car-cams",
-        price: "75,000",
-        specs: "الدقة: 4K UHD | الرؤية: 170 درجة",
-        description: "تصوير ليلي واضح للغاية مع خاصية التسجيل المستمر واستشعار الصدمات.",
-        image: "https://via.placeholder.com/400x300?text=Dash+Cam"
+    async function loadStoreData() {
+      try {
+        const res = await fetch('data.json');
+        storeData = await res.json();
+      } catch (e) {
+        // بيانات افتراضية في حال عدم وجود الملف
+        storeData = {
+          categories: [
+            { id: "tv", name: "قواعد وشاشات TV" },
+            { id: "cam", name: "كاميرات السيارات" }
+          ],
+          products: [
+            { id: "1", catId: "tv", title: "حامل شاشة A86", price: "120,000", specs: "مناسب لـ 55-85 بوصة", desc: "قاعدة متحركة متينة للغاية", img: "https://via.placeholder.com/300" }
+          ]
+        };
       }
-    ];
+      renderCategories();
+      renderProducts('all');
+    }
 
-    function renderProducts(items) {
-      const container = document.getElementById('products-grid');
-      container.innerHTML = items.map(p => `
+    function renderCategories() {
+      const bar = document.getElementById('categories-bar');
+      let html = `<button class="cat-btn active" onclick="filterCat('all', this)">الكل</button>`;
+      storeData.categories.forEach(c => {
+        html += `<button class="cat-btn" onclick="filterCat('${c.id}', this)">${c.name}</button>`;
+      });
+      bar.innerHTML = html;
+    }
+
+    function renderProducts(catId) {
+      const grid = document.getElementById('products-grid');
+      const filtered = catId === 'all' ? storeData.products : storeData.products.filter(p => p.catId === catId);
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">لا توجد منتجات في هذا القسم حالياً.</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
         <div class="product-card">
-          <img src="${p.image}" class="product-img" alt="${p.title}">
+          <img src="${p.img || 'https://via.placeholder.com/300'}" class="product-img">
           <div class="product-details">
             <h3 class="product-title">${p.title}</h3>
-            <div class="specs-highlight">${p.specs}</div>
-            <p class="product-desc">${p.description}</p>
+            ${p.specs ? `<div class="specs-highlight">${p.specs}</div>` : ''}
+            <p class="product-desc">${p.desc}</p>
             <div class="product-footer">
               <span class="product-price">${p.price} د.ع</span>
-              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('السلام عليكم، أود طلب المنتج: ' + p.title + ' بسعر ' + p.price)}" target="_blank" class="btn-buy">
-                طلب عبر WhatsApp
-              </a>
+              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('طلب: ' + p.title + ' بسعر ' + p.price)}" target="_blank" class="btn-buy">واتساب</a>
             </div>
           </div>
         </div>
       `).join('');
     }
 
-    function filterCategory(cat) {
-      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      
-      if (cat === 'all') {
-        renderProducts(products);
-      } else {
-        const filtered = products.filter(p => p.category === cat);
-        renderProducts(filtered);
-      }
+    function filterCat(catId, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(catId);
     }
 
-    // عرض الكل عند التحميل
-    renderProducts(products);
+    loadStoreData();
   </script>
 </body>
 </html>
