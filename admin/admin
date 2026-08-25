@@ -20,7 +20,7 @@
 </head>
 <body>
 
-  <h1>⚙️ لوحة تحكم المتجر الكاملة</h1>
+  <h1>⚙️ لوحة تحكم معرض ADVOX</h1>
   <button onclick="downloadJSON()" style="background:#2563eb; margin-bottom: 20px;">📥 تنزيل ملف البيانات (data.json) للحفظ على GitHub</button>
 
   <div class="grid">
@@ -56,7 +56,7 @@
         <label>السعر (بالدينار):</label>
         <input type="text" id="prod-price" placeholder="مثال: 95,000">
 
-        <label>المواصفات / القياسات (تظهر باللون الأخضر):</label>
+        <label>المواصفات / القياسات:</label>
         <input type="text" id="prod-specs" placeholder="القياسات بالسنتيمتر أو البوصة">
 
         <label>الوصف التفصيلي:</label>
@@ -79,7 +79,6 @@
   <script>
     let data = { categories: [], products: [] };
 
-    // تحميل البيانات من localStorage أولاً أو data.json
     async function init() {
       const saved = localStorage.getItem('advox_store_data');
       if (saved) {
@@ -106,7 +105,6 @@
       renderProductsList();
     }
 
-    /* --- إدارة الأقسام --- */
     function renderCategoriesList() {
       const list = document.getElementById('categories-list');
       list.innerHTML = data.categories.map(c => `
@@ -144,7 +142,7 @@
     }
 
     function deleteCategory(id) {
-      if (confirm('سيتم حذف القسم وجميع المنتجات المرتبطة به، هل أنت تأكد؟')) {
+      if (confirm('سيتم حذف القسم والمنتجات التابعة له، هل أنت تأكد؟')) {
         data.categories = data.categories.filter(c => c.id !== id);
         data.products = data.products.filter(p => p.catId !== id);
         saveData();
@@ -157,7 +155,6 @@
       document.getElementById('cat-form-title').innerText = "إضافة قسم جديد";
     }
 
-    /* --- إدارة المنتجات --- */
     function renderCategorySelect() {
       const select = document.getElementById('prod-cat-select');
       select.innerHTML = data.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
@@ -235,7 +232,6 @@
       document.getElementById('prod-form-title').innerText = "إضافة منتج جديد";
     }
 
-    /* تنزيل الملف لحفظه على GitHub */
     function downloadJSON() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
       const downloadAnchor = document.createElement('a');
