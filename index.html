@@ -3,137 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>معرض ADVOX - المتجر الرسمي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <title>معرض ADVOX - الأثاث والديكور العصري</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #111827;
-      --accent: #16a34a;
-      --bg-light: #f9fafb;
-      --card-bg: #ffffff;
-      --text-dark: #1f2937;
-      --text-muted: #6b7280;
+    :root { --main-color: #16a34a; --text-color: #1f2937; --bg-color: #f3f4f6; --box-bg: #ffffff; }
+    body { font-family: 'Tajawal', sans-serif; margin: 0; background: var(--bg-color); color: var(--text-color); }
+    a { text-decoration: none; color: inherit; }
+    
+    /* Header */
+    header { background: var(--box-bg); padding: 15px 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #111827; }
+    .logo span { color: var(--main-color); }
+    
+    /* Categories Bar */
+    .categories-bar { background: var(--box-bg); padding: 10px 5%; display: flex; gap: 10px; overflow-x: auto; border-bottom: 1px solid #e5e7eb; position: sticky; top: 65px; z-index: 999;}
+    .cat-btn { background: #e5e7eb; padding: 8px 18px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: 0.2s; font-size: 0.9rem; }
+    .cat-btn:hover, .cat-btn.active { background: var(--main-color); color: white; }
+    
+    /* Main Content */
+    main { padding: 30px 5%; }
+    .section-title { font-size: 1.8rem; margin-bottom: 25px; text-align: center; color: #111827; }
+    
+    /* Product Grid */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+    .product-card { background: var(--box-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.03); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+    .product-img-wrapper { width: 100%; height: 220px; overflow: hidden; }
+    .product-img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info { padding: 15px; }
+    .product-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 8px 0; color: #111827; }
+    .product-specs { font-size: 0.85rem; color: #6b7280; margin: 0 0 12px 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;}
+    .product-bottom { display: flex; justify-content: space-between; align-items: center; }
+    .product-price { font-size: 1.2rem; font-weight: 700; color: var(--main-color); }
+    
+    /* Floating Whatsapp Button */
+    .whatsapp-float { position: fixed; bottom: 20px; left: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 1000; transition: 0.2s; }
+    .whatsapp-float:hover { transform: scale(1.1); }
+
+    /* Product Modal */
+    .modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; padding: 20px;}
+    .modal.show { display: flex; }
+    .modal-content { background: white; border-radius: 15px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #6b7280; z-index: 10; }
+    .modal-img-wrapper { height: 100%; max-height: 400px; border-radius: 10px; overflow: hidden; }
+    .modal-img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-details { display: flex; flex-direction: column; }
+    .modal-price { font-size: 2rem; font-weight: 700; color: var(--main-color); margin-bottom: 10px; }
+    .modal-specs { color: #6b7280; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb;}
+    .modal-desc { margin-bottom: 30px; flex-grow: 1; }
+    .order-btn { background: var(--main-color); color: white; text-align: center; padding: 15px; border-radius: 10px; font-weight: 700; font-size: 1.1rem; cursor: pointer; }
+    
+    @media (max-width: 768px) {
+      .modal-content { grid-template-columns: 1fr; }
+      .modal-img-wrapper { max-height: 300px; }
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-    body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
-
-    header { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.8rem; font-weight: 800; color: #fff; text-decoration: none; }
-    .logo span { color: var(--accent); }
-
-    .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: white; padding: 50px 5%; text-align: center; }
-    .hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
-
-    /* شريط الأقسام Dynamic Category Bar */
-    .categories-bar { display: flex; justify-content: center; gap: 10px; padding: 20px 5%; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
-    .cat-btn { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 10px 22px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
-    .cat-btn.active, .cat-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
-    .container { padding: 30px 5%; max-width: 1400px; margin: 0 auto; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-
-    .product-card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-    .product-img { width: 100%; height: 230px; object-fit: cover; background: #f3f4f6; }
-    .product-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
-    .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text-dark); }
-    .specs-highlight { color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
-    .product-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; flex-grow: 1; white-space: pre-line; }
-
-    .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
-    .product-price { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
-    .btn-buy { background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; }
-    .btn-buy:hover { background: #1eb854; }
-
-    footer { background: var(--primary); color: #9ca3af; text-align: center; padding: 25px; margin-top: 40px; }
+    /* Footer */
+    footer { background: var(--box-bg); text-align: center; padding: 30px 5%; margin-top: 50px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 0.9rem; }
   </style>
 </head>
 <body>
 
   <header>
-    <a href="#" class="logo">ADVOX <span>GALLERY</span></a>
-    <a href="admin.html" style="color:#d1d5db; text-decoration:none; font-weight:bold;">⚙️ لوحة التحكم</a>
+    <div class="logo">معرض <span>ADVOX</span></div>
+    <div>الأثاث والديكور العصري</div>
   </header>
 
-  <section class="hero">
-    <h1>معرض ADVOX الإلكتروني</h1>
-    <p>أحدث الشاشات، القواعد، والإكسسوارات الإلكترونية</p>
-  </section>
-
-  <!-- شريط الأقسام الديناميكي -->
-  <div class="categories-bar" id="categories-bar"></div>
-
-  <div class="container">
-    <div class="products-grid" id="products-grid"></div>
+  <div class="categories-bar" id="categories-bar">
+    <div class="cat-btn active" onclick="filterProducts('all', this)">الكل</div>
+    <!-- سيتم تحميل الأقسام هنا ديناميكياً -->
   </div>
 
-  <footer><p>جميع الحقوق محفوظة &copy; معرض ADVOX 2026</p></footer>
+  <main>
+    <div class="section-title">أحدث المنتجات</div>
+    <div class="products-grid" id="products-grid">
+      <!-- سيتم تحميل المنتجات هنا ديناميكياً -->
+    </div>
+  </main>
 
+  <footer>
+    <p>© 2026 معرض ADVOX. جميع الحقوق محفوظة.</p>
+    <p>العراق - تصميم وتنفيذ ADVOX Tech</p>
+  </footer>
+
+  <a href="https://wa.me/964123456789" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Product Modal -->
+  <div class="modal" id="product-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">×</span>
+      <div class="modal-img-wrapper">
+        <img id="modal-img" src="" alt="" class="modal-img">
+      </div>
+      <div class="modal-details">
+        <h2 id="modal-title" class="product-title"></h2>
+        <div id="modal-price" class="modal-price"></div>
+        <div id="modal-specs" class="modal-specs"></div>
+        <div id="modal-desc" class="modal-desc"></div>
+        <a id="modal-order-btn" href="" target="_blank" class="order-btn">📦 اطلب عبر الواتساب</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script>
-    const whatsappNumber = "9647000000000"; // ضع رقمك هنا
-    let storeData = { categories: [], products: [] };
+    // الإعدادات (رقم الواتساب الخاص بك)
+    const WHATSAPP_NUMBER = "964123456789"; 
+
+    let allProducts = [];
+    let categories = [];
 
     async function loadStoreData() {
       try {
-        const res = await fetch('data.json');
-        storeData = await res.json();
-      } catch (e) {
-        // بيانات افتراضية في حال عدم وجود الملف
-        storeData = {
-          categories: [
-            { id: "tv", name: "قواعد وشاشات TV" },
-            { id: "cam", name: "كاميرات السيارات" }
-          ],
-          products: [
-            { id: "1", catId: "tv", title: "حامل شاشة A86", price: "120,000", specs: "مناسب لـ 55-85 بوصة", desc: "قاعدة متحركة متينة للغاية", img: "https://via.placeholder.com/300" }
-          ]
-        };
+        const response = await fetch('data.json');
+        const data = await response.json();
+        allProducts = data.products || [];
+        categories = data.categories || [];
+        
+        renderCategories();
+        renderProducts(allProducts);
+      } catch (error) {
+        console.error('Error loading store data:', error);
+        document.getElementById('products-grid').innerHTML = '<p style="text-align:center; padding: 50px;">حدث خطأ في تحميل المنتجات.</p>';
       }
-      renderCategories();
-      renderProducts('all');
     }
 
     function renderCategories() {
       const bar = document.getElementById('categories-bar');
-      let html = `<button class="cat-btn active" onclick="filterCat('all', this)">الكل</button>`;
-      storeData.categories.forEach(c => {
-        html += `<button class="cat-btn" onclick="filterCat('${c.id}', this)">${c.name}</button>`;
+      categories.forEach(cat => {
+        const btn = document.createElement('div');
+        btn.className = 'cat-btn';
+        btn.innerText = cat.name;
+        btn.onclick = () => filterProducts(cat.id, btn);
+        bar.appendChild(btn);
       });
-      bar.innerHTML = html;
     }
 
-    function renderProducts(catId) {
+    function renderProducts(products) {
       const grid = document.getElementById('products-grid');
-      const filtered = catId === 'all' ? storeData.products : storeData.products.filter(p => p.catId === catId);
-      
-      if (filtered.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">لا توجد منتجات في هذا القسم حالياً.</p>`;
-        return;
-      }
+      grid.innerHTML = ''; // تنظيف الشبكة أولاً
 
-      grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-          <img src="${p.img || 'https://via.placeholder.com/300'}" class="product-img">
-          <div class="product-details">
+      products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.onclick = () => openModal(p);
+
+        card.innerHTML = `
+          <div class="product-img-wrapper">
+            <img src="${p.img}" alt="${p.title}" class="product-img">
+          </div>
+          <div class="product-info">
             <h3 class="product-title">${p.title}</h3>
-            ${p.specs ? `<div class="specs-highlight">${p.specs}</div>` : ''}
-            <p class="product-desc">${p.desc}</p>
-            <div class="product-footer">
+            <p class="product-specs">${p.specs || ''}</p>
+            <div class="product-bottom">
               <span class="product-price">${p.price} د.ع</span>
-              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('طلب: ' + p.title + ' بسعر ' + p.price)}" target="_blank" class="btn-buy">واتساب</a>
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+        grid.appendChild(card);
+      });
     }
 
-    function filterCat(catId, btn) {
+    function filterProducts(categoryId, btn) {
+      // تحديث حالة الأزرار
       document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderProducts(catId);
+
+      if (categoryId === 'all') {
+        renderProducts(allProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.catId === categoryId);
+        renderProducts(filtered);
+      }
     }
 
+    /* --- إدارة النافذة المنبثقة (Modal) --- */
+    const modal = document.getElementById('product-modal');
+
+    function openModal(product) {
+      document.getElementById('modal-img').src = product.img;
+      document.getElementById('modal-title').innerText = product.title;
+      document.getElementById('modal-price').innerText = `${product.price} د.ع`;
+      document.getElementById('modal-specs').innerText = `المواصفات: ${product.specs || 'غير متوفرة'}`;
+      document.getElementById('modal-desc').innerText = product.desc || '';
+      
+      const whatsappMsg = btoa(encodeURIComponent(`السلام عليكم، أريد طلب منتج: ${product.title}\nالسعر: ${product.price}\nرابط الصورة: ${product.img}`));
+      document.getElementById('modal-order-btn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`;
+
+      modal.classList.add('show');
+    }
+
+    function closeModal() {
+      modal.classList.remove('show');
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // تحميل البيانات عند فتح الصفحة
     loadStoreData();
   </script>
 </body>
