@@ -2,139 +2,289 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>معرض ADVOX - المتجر الرسمي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <title>لوحة التحكم الفورية - معرض ADVOX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #111827;
-      --accent: #16a34a;
-      --bg-light: #f9fafb;
-      --card-bg: #ffffff;
-      --text-dark: #1f2937;
-      --text-muted: #6b7280;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-    body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
-
-    header { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.8rem; font-weight: 800; color: #fff; text-decoration: none; }
-    .logo span { color: var(--accent); }
-
-    .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: white; padding: 50px 5%; text-align: center; }
-    .hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
-
-    /* شريط الأقسام Dynamic Category Bar */
-    .categories-bar { display: flex; justify-content: center; gap: 10px; padding: 20px 5%; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
-    .cat-btn { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 10px 22px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
-    .cat-btn.active, .cat-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
-    .container { padding: 30px 5%; max-width: 1400px; margin: 0 auto; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-
-    .product-card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-    .product-img { width: 100%; height: 230px; object-fit: cover; background: #f3f4f6; }
-    .product-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
-    .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text-dark); }
-    .specs-highlight { color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
-    .product-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; flex-grow: 1; white-space: pre-line; }
-
-    .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
-    .product-price { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
-    .btn-buy { background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; }
-    .btn-buy:hover { background: #1eb854; }
-
-    footer { background: var(--primary); color: #9ca3af; text-align: center; padding: 25px; margin-top: 40px; }
+    body { font-family: 'Tajawal', sans-serif; margin: 20px; background: #f3f4f6; color: #1f2937; }
+    h1, h2 { color: #111827; margin-bottom: 15px; }
+    .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    input, select, textarea { width: 100%; padding: 10px; margin: 8px 0 15px 0; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; }
+    button { background: #16a34a; color: white; border: none; padding: 11px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+    button:hover { background: #15803d; }
+    .btn-danger { background: #dc2626; width: auto; } .btn-danger:hover { background: #b91c1c; }
+    .btn-warning { background: #d97706; width: auto; } .btn-warning:hover { background: #b45309; }
+    .btn-sync { background: #2563eb; margin-top: 10px; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #edf2f7; }
+    .actions button { padding: 6px 12px; margin-right: 5px; font-size: 0.85rem; }
+    .status { padding: 10px; background: #e0f2fe; color: #0369a1; border-radius: 6px; margin-bottom: 15px; display: none; }
   </style>
 </head>
 <body>
 
-  <header>
-    <a href="#" class="logo">ADVOX <span>GALLERY</span></a>
-    <a href="admin.html" style="color:#d1d5db; text-decoration:none; font-weight:bold;">⚙️ لوحة التحكم</a>
-  </header>
-
-  <section class="hero">
-    <h1>معرض ADVOX الإلكتروني</h1>
-    <p>أحدث الشاشات، القواعد، والإكسسوارات الإلكترونية</p>
-  </section>
-
-  <!-- شريط الأقسام الديناميكي -->
-  <div class="categories-bar" id="categories-bar"></div>
-
-  <div class="container">
-    <div class="products-grid" id="products-grid"></div>
+  <h1>⚙️ لوحة التحكم والتعديل الفوري</h1>
+  
+  <div class="box">
+    <h2>إعدادات الاتصال المباشر بـ GitHub</h2>
+    <label>رمز الوصول الخاص بك (GitHub Personal Access Token):</label>
+    <input type="password" id="gh-token" placeholder="الصق الرمز الخاص بك هنا غرض الحفظ">
+    <button onclick="saveToken()" style="background:#4b5563;">حفظ الرمز في المتصفح</button>
   </div>
 
-  <footer><p>جميع الحقوق محفوظة &copy; معرض ADVOX 2026</p></footer>
+  <div id="status-msg" class="status"></div>
+
+  <div class="grid">
+    <!-- إدارة الأقسام -->
+    <div>
+      <div class="box">
+        <h2 id="cat-form-title">إضافة / تعديل قسم</h2>
+        <input type="hidden" id="edit-cat-id">
+        <label>اسم القسم:</label>
+        <input type="text" id="cat-name" placeholder="مثال: قواعد وشاشات TV">
+        <button onclick="saveCategory()">حفظ التعديل في القسم</button>
+      </div>
+
+      <div class="box">
+        <h2>قائمة الأقسام الحالية</h2>
+        <div id="categories-list"></div>
+      </div>
+    </div>
+
+    <!-- إدارة المنتجات والأسعار والقياسات -->
+    <div>
+      <div class="box">
+        <h2 id="prod-form-title">إضافة / تعديل منتج</h2>
+        <input type="hidden" id="edit-prod-id">
+        
+        <label>اختر القسم:</label>
+        <select id="prod-cat-select"></select>
+
+        <label>اسم المنتج:</label>
+        <input type="text" id="prod-title" placeholder="اسم المنتج">
+
+        <label>السعر (بالدينار):</label>
+        <input type="text" id="prod-price" placeholder="مثال: 95,000">
+
+        <label>المواصفات والقياسات (بالسنتيمتر):</label>
+        <input type="text" id="prod-specs" placeholder="مثال: القياسات 120cm × 45cm | الشاشات 55-75 بوصة">
+
+        <label>وصف المنتج:</label>
+        <textarea id="prod-desc" rows="3"></textarea>
+
+        <label>رابط الصورة المباشر (URL):</label>
+        <input type="text" id="prod-img" placeholder="https://domain.com/image.jpg">
+
+        <button onclick="saveProduct()">حفظ المنتج والتغييرات</button>
+      </div>
+
+      <div class="box">
+        <h2>قائمة المنتجات والأسعار</h2>
+        <div id="products-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-sync" onclick="syncToGitHub()">🚀 نشر التعديلات فورياً على المتجر</button>
 
   <script>
-    const whatsappNumber = "9647000000000"; // ضع رقمك هنا
+    const USERNAME = "ameralahlam444-glitch";
+    const REPO = "advox-store";
+    const FILE_PATH = "data.json";
+
     let storeData = { categories: [], products: [] };
+    let fileSHA = "";
 
-    async function loadStoreData() {
+    function showStatus(msg) {
+      const el = document.getElementById('status-msg');
+      el.style.display = 'block';
+      el.innerText = msg;
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+
+    function saveToken() {
+      const token = document.getElementById('gh-token').value;
+      localStorage.setItem('gh_token', token);
+      showStatus("تم حفظ الرمز بنجاح! يمكنك الآن التعديل والنشر فوراً.");
+      loadFromGitHub();
+    }
+
+    // جلب البيانات الأصلية فورفتح الصفحة
+    async function loadFromGitHub() {
+      const token = localStorage.getItem('gh_token');
+      if (token) document.getElementById('gh-token').value = token;
+
       try {
-        const res = await fetch('data.json');
-        storeData = await res.json();
+        const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/contents/${FILE_PATH}`);
+        const json = await res.json();
+        fileSHA = json.sha;
+        const decodedContent = decodeURIComponent(escape(atob(json.content)));
+        storeData = JSON.parse(decodedContent);
+        renderAll();
       } catch (e) {
-        // بيانات افتراضية في حال عدم وجود الملف
-        storeData = {
-          categories: [
-            { id: "tv", name: "قواعد وشاشات TV" },
-            { id: "cam", name: "كاميرات السيارات" }
-          ],
-          products: [
-            { id: "1", catId: "tv", title: "حامل شاشة A86", price: "120,000", specs: "مناسب لـ 55-85 بوصة", desc: "قاعدة متحركة متينة للغاية", img: "https://via.placeholder.com/300" }
-          ]
-        };
+        showStatus("خطأ في جلب البيانات. تأكد من صحة رمز Token.");
       }
-      renderCategories();
-      renderProducts('all');
     }
 
-    function renderCategories() {
-      const bar = document.getElementById('categories-bar');
-      let html = `<button class="cat-btn active" onclick="filterCat('all', this)">الكل</button>`;
-      storeData.categories.forEach(c => {
-        html += `<button class="cat-btn" onclick="filterCat('${c.id}', this)">${c.name}</button>`;
-      });
-      bar.innerHTML = html;
+    function renderAll() {
+      renderCategoriesList();
+      renderCategorySelect();
+      renderProductsList();
     }
 
-    function renderProducts(catId) {
-      const grid = document.getElementById('products-grid');
-      const filtered = catId === 'all' ? storeData.products : storeData.products.filter(p => p.catId === catId);
-      
-      if (filtered.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">لا توجد منتجات في هذا القسم حالياً.</p>`;
-        return;
-      }
-
-      grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-          <img src="${p.img || 'https://via.placeholder.com/300'}" class="product-img">
-          <div class="product-details">
-            <h3 class="product-title">${p.title}</h3>
-            ${p.specs ? `<div class="specs-highlight">${p.specs}</div>` : ''}
-            <p class="product-desc">${p.desc}</p>
-            <div class="product-footer">
-              <span class="product-price">${p.price} د.ع</span>
-              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('طلب: ' + p.title + ' بسعر ' + p.price)}" target="_blank" class="btn-buy">واتساب</a>
-            </div>
+    function renderCategoriesList() {
+      document.getElementById('categories-list').innerHTML = storeData.categories.map(c => `
+        <div class="item-row">
+          <span><strong>${c.name}</strong></span>
+          <div class="actions">
+            <button onclick="editCategory('${c.id}')" class="btn-warning">تعديل</button>
+            <button onclick="deleteCategory('${c.id}')" class="btn-danger">حذف</button>
           </div>
         </div>
       `).join('');
     }
 
-    function filterCat(catId, btn) {
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderProducts(catId);
+    function renderCategorySelect() {
+      document.getElementById('prod-cat-select').innerHTML = storeData.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
 
-    loadStoreData();
+    function renderProductsList() {
+      document.getElementById('products-list').innerHTML = storeData.products.map(p => {
+        const cat = storeData.categories.find(c => c.id === p.catId);
+        return `
+          <div class="item-row">
+            <div>
+              <strong>${p.title}</strong> — <span style="color:#16a34a; font-weight:bold;">${p.price} د.ع</span><br>
+              <small style="color:#6b7280">القسم: ${cat ? cat.name : 'بدون قسم'} | القياسات: ${p.specs || 'غير محددة'}</small>
+            </div>
+            <div class="actions">
+              <button onclick="editProduct('${p.id}')" class="btn-warning">تعديل</button>
+              <button onclick="deleteProduct('${p.id}')" class="btn-danger">حذف</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function saveCategory() {
+      const name = document.getElementById('cat-name').value;
+      const id = document.getElementById('edit-cat-id').value;
+      if (!name) return alert("أدخل اسم القسم");
+
+      if (id) {
+        const cat = storeData.categories.find(c => c.id === id);
+        if (cat) cat.name = name;
+      } else {
+        storeData.categories.push({ id: 'cat_' + Date.now(), name });
+      }
+      document.getElementById('cat-name').value = '';
+      document.getElementById('edit-cat-id').value = '';
+      renderAll();
+    }
+
+    function editCategory(id) {
+      const cat = storeData.categories.find(c => c.id === id);
+      if (cat) {
+        document.getElementById('cat-name').value = cat.name;
+        document.getElementById('edit-cat-id').value = cat.id;
+      }
+    }
+
+    function deleteCategory(id) {
+      if (confirm("سيتم حذف القسم والمنتجات التابعة له")) {
+        storeData.categories = storeData.categories.filter(c => c.id !== id);
+        storeData.products = storeData.products.filter(p => p.catId !== id);
+        renderAll();
+      }
+    }
+
+    function saveProduct() {
+      const id = document.getElementById('edit-prod-id').value;
+      const catId = document.getElementById('prod-cat-select').value;
+      const title = document.getElementById('prod-title').value;
+      const price = document.getElementById('prod-price').value;
+      const specs = document.getElementById('prod-specs').value;
+      const desc = document.getElementById('prod-desc').value;
+      const img = document.getElementById('prod-img').value;
+
+      if (!title || !price) return alert("يرجى ملء كافة الخانات الأساسية");
+
+      const pData = { id: id || 'prod_' + Date.now(), catId, title, price, specs, desc, img };
+
+      if (id) {
+        const index = storeData.products.findIndex(p => p.id === id);
+        if (index !== -1) storeData.products[index] = pData;
+      } else {
+        storeData.products.push(pData);
+      }
+
+      resetProdForm();
+      renderAll();
+    }
+
+    function editProduct(id) {
+      const p = storeData.products.find(p => p.id === id);
+      if (!p) return;
+      document.getElementById('edit-prod-id').value = p.id;
+      document.getElementById('prod-cat-select').value = p.catId;
+      document.getElementById('prod-title').value = p.title;
+      document.getElementById('prod-price').value = p.price;
+      document.getElementById('prod-specs').value = p.specs || '';
+      document.getElementById('prod-desc').value = p.desc || '';
+      document.getElementById('prod-img').value = p.img || '';
+    }
+
+    function deleteProduct(id) {
+      if (confirm("حذف هذا المنتج؟")) {
+        storeData.products = storeData.products.filter(p => p.id !== id);
+        renderAll();
+      }
+    }
+
+    function resetProdForm() {
+      document.getElementById('edit-prod-id').value = '';
+      document.getElementById('prod-title').value = '';
+      document.getElementById('prod-price').value = '';
+      document.getElementById('prod-specs').value = '';
+      document.getElementById('prod-desc').value = '';
+      document.getElementById('prod-img').value = '';
+    }
+
+    // التحديث المباشر والفوري على مستودع GitHub
+    async function syncToGitHub() {
+      const token = localStorage.getItem('gh_token');
+      if (!token) return alert("يرجى إدخال رمز الوصول (GitHub Token) أولاً للحفظ المباشر.");
+
+      showStatus("جاري تحديث المتجر ونشر التغييرات...");
+
+      const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(storeData, null, 2))));
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/contents/${FILE_PATH}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `token ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: "تحديث الأسعار والمنتجات فورياً من لوحة التحكم",
+            content: updatedContent,
+            sha: fileSHA
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          fileSHA = data.content.sha;
+          showStatus("✅ تم نشر التحديثات والتغيرات بنجاح! ستظهر في المتجر خلال دقيقة.");
+        } else {
+          showStatus("❌ فشل التحديث. تأكد من أن الرمز يمتلك صلاحية repo.");
+        }
+      } catch (e) {
+        showStatus("حدث خطأ أثناء الاتصال بـ GitHub.");
+      }
+    }
+
+    loadFromGitHub();
   </script>
 </body>
 </html>
