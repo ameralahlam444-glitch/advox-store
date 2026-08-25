@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرض ADVOX - المتجر الرسمي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #111827;
+      --accent: #16a34a;
+      --bg-light: #f9fafb;
+      --card-bg: #ffffff;
+      --text-dark: #1f2937;
+      --text-muted: #6b7280;
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+    header { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.8rem; font-weight: 800; color: #fff; text-decoration: none; }
+    .logo span { color: var(--accent); }
+
+    .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: white; padding: 50px 5%; text-align: center; }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
+
+    /* شريط الأقسام Dynamic Category Bar */
+    .categories-bar { display: flex; justify-content: center; gap: 10px; padding: 20px 5%; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
+    .cat-btn { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 10px 22px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+    .cat-btn.active, .cat-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .container { padding: 30px 5%; max-width: 1400px; margin: 0 auto; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+
+    .product-card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+    .product-img { width: 100%; height: 230px; object-fit: cover; background: #f3f4f6; }
+    .product-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
+    .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text-dark); }
+    .specs-highlight { color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
+    .product-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; flex-grow: 1; white-space: pre-line; }
+
+    .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
+    .product-price { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
+    .btn-buy { background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    .btn-buy:hover { background: #1eb854; }
+
+    footer { background: var(--primary); color: #9ca3af; text-align: center; padding: 25px; margin-top: 40px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">ADVOX <span>GALLERY</span></a>
+    <a href="admin.html" style="color:#d1d5db; text-decoration:none; font-weight:bold;">⚙️ لوحة التحكم</a>
+  </header>
+
+  <section class="hero">
+    <h1>معرض ADVOX الإلكتروني</h1>
+    <p>أحدث الشاشات، القواعد، والإكسسوارات الإلكترونية</p>
+  </section>
+
+  <!-- شريط الأقسام الديناميكي -->
+  <div class="categories-bar" id="categories-bar"></div>
+
+  <div class="container">
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+  <footer><p>جميع الحقوق محفوظة &copy; معرض ADVOX 2026</p></footer>
+
+  <script>
+    const whatsappNumber = "9647000000000"; // ضع رقمك هنا
+    let storeData = { categories: [], products: [] };
+
+    async function loadStoreData() {
+      try {
+        const res = await fetch('data.json');
+        storeData = await res.json();
+      } catch (e) {
+        // بيانات افتراضية في حال عدم وجود الملف
+        storeData = {
+          categories: [
+            { id: "tv", name: "قواعد وشاشات TV" },
+            { id: "cam", name: "كاميرات السيارات" }
+          ],
+          products: [
+            { id: "1", catId: "tv", title: "حامل شاشة A86", price: "120,000", specs: "مناسب لـ 55-85 بوصة", desc: "قاعدة متحركة متينة للغاية", img: "https://via.placeholder.com/300" }
+          ]
+        };
+      }
+      renderCategories();
+      renderProducts('all');
+    }
+
+    function renderCategories() {
+      const bar = document.getElementById('categories-bar');
+      let html = `<button class="cat-btn active" onclick="filterCat('all', this)">الكل</button>`;
+      storeData.categories.forEach(c => {
+        html += `<button class="cat-btn" onclick="filterCat('${c.id}', this)">${c.name}</button>`;
+      });
+      bar.innerHTML = html;
+    }
+
+    function renderProducts(catId) {
+      const grid = document.getElementById('products-grid');
+      const filtered = catId === 'all' ? storeData.products : storeData.products.filter(p => p.catId === catId);
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">لا توجد منتجات في هذا القسم حالياً.</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+          <img src="${p.img || 'https://via.placeholder.com/300'}" class="product-img">
+          <div class="product-details">
+            <h3 class="product-title">${p.title}</h3>
+            ${p.specs ? `<div class="specs-highlight">${p.specs}</div>` : ''}
+            <p class="product-desc">${p.desc}</p>
+            <div class="product-footer">
+              <span class="product-price">${p.price} د.ع</span>
+              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('طلب: ' + p.title + ' بسعر ' + p.price)}" target="_blank" class="btn-buy">واتساب</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCat(catId, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(catId);
+    }
+
+    loadStoreData();
+  </script>
+</body>
+</html>
