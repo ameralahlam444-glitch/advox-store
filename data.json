@@ -6,22 +6,36 @@
     },
     {
       "id": "cat_2",
-      "name": "كاميرات السيارات"
-    },
-    {
-      "id": "cat_3",
-      "name": "اجهزة TVBOX"
+      "name": "طاولات ووسطيات"
     }
   ],
   "products": [
     {
       "id": "prod_1",
       "catId": "cat_1",
-      "title": "حامل شاشة متحرك A86",
+      "title": "قاعدة شاشة كلاسيك",
       "price": "120,000",
-      "specs": "يناسب الشاشات من 55 إلى 85 بوصة",
-      "desc": "تصميم فولاذي متين يتحمل الأوزان الثقيلة مع سهولة في الحركة.",
-      "img": "https://via.placeholder.com/300"
+      "specs": "القياس 160cm × 40cm × 50cm",
+      "desc": "قاعدة شاشة خشبية كلاسيكية متينة، مناسبة للشاشات الكبيرة حتى 65 بوصة.",
+      "img": "https://dummyimage.com/600x400/16a34a/fff.png&text=ADVOX+TV+Classic"
+    },
+    {
+      "id": "prod_2",
+      "catId": "cat_2",
+      "title": "طاولة وسطية عصرية",
+      "price": "85,000",
+      "specs": "القياس 100cm × 60cm × 45cm",
+      "desc": "طاولة وسطية مودرن بسطح زجاجي مقاوم للخدش، تضفي لمسة عصرية لغرفة المعيشة.",
+      "img": "https://dummyimage.com/600x400/16a34a/fff.png&text=ADVOX+Table+Modern"
+    },
+    {
+      "id": "prod_3",
+      "catId": "cat_1",
+      "title": "مكتبة شاشة ذكية",
+      "price": "210,000",
+      "specs": "القياس 200cm × 180cm",
+      "desc": "مكتبة شاشة متكاملة مع رفوف للإضاءة وأماكن للتخزين.",
+      "img": "https://dummyimage.com/600x400/16a34a/fff.png&text=ADVOX+TV+Library"
     }
   ]
 }
