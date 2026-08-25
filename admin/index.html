@@ -1,12 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة تحكم معرض ADVOX</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-</head>
-<body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-</body>
-</html>
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "products"
+    label: "المنتجات"
+    folder: "data/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "اسم المنتج", name: "title", widget: "string" }
+      - label: "القسم"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "قواعد وشاشات TV", value: "tv-stands" }
+          - { label: "كاميرات السيارات", value: "car-cams" }
+          - { label: "إكسسوارات وهواتف", value: "accessories" }
+          - { label: "أثاث وإضاءة", value: "furniture" }
+      - { label: "السعر (بالدينار)", name: "price", widget: "string" }
+      - { label: "المواصفات والقياسات (مثل: يناسب 55-85 بوصة)", name: "specs", widget: "string", required: false }
+      - { label: "وصف المنتج التفصيلي", name: "description", widget: "text" }
+      - { label: "صورة المنتج", name: "image", widget: "image" }
